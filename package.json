@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@sendgrid/client": "^7.6.0",
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "fast-csv": "^4.3.6"
   },
   "name": "email-verifier",
   "version": "1.0.0",
