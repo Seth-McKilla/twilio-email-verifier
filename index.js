@@ -6,7 +6,7 @@ const client = require("@sendgrid/client");
 client.setApiKey(process.env.SENDGRID_API_KEY);
 
 const limiter = new Bottleneck({
-  minTime: 150, // sendgrid rate limited to 7 requests per second
+  minTime: 200, // sendgrid rate limited to 7 requests per second
 });
 
 const inputFile = path.resolve(
