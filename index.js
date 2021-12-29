@@ -4,6 +4,7 @@ const Bottleneck = require("bottleneck");
 require("dotenv").config();
 const client = require("@sendgrid/client");
 client.setApiKey(process.env.SENDGRID_API_KEY);
+const readCsv = require("./lib/readCsv");
 
 const limiter = new Bottleneck({
   minTime: 200, // sendgrid rate limited to 7 requests per second
@@ -12,30 +13,13 @@ const limiter = new Bottleneck({
 const inputFile = path.resolve(
   __dirname,
   "assets",
-  "DAO_central_emails_1-500.csv"
+  "DAO_central_emails_missed.csv"
 );
 const outputFile = path.resolve(
   __dirname,
   "assets",
-  "DAO_central_emails_validated.csv"
+  "DAO_central_emails_missed_validated.csv"
 );
-
-function readCsv(path, options, rowProcessor) {
-  return new Promise((resolve, reject) => {
-    const data = [];
-
-    csv
-      .parseFile(path, options)
-      .on("error", reject)
-      .on("data", (row) => {
-        const obj = rowProcessor(row);
-        if (obj) data.push(obj);
-      })
-      .on("end", () => {
-        resolve(data);
-      });
-  });
-}
 
 (async function () {
   let results = [];

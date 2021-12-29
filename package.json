@@ -3,7 +3,8 @@
     "@sendgrid/client": "^7.6.0",
     "bottleneck": "^2.19.5",
     "dotenv": "^10.0.0",
-    "fast-csv": "^4.3.6"
+    "fast-csv": "^4.3.6",
+    "lodash": "^4.17.21"
   },
   "name": "email-verifier",
   "version": "1.0.0",
