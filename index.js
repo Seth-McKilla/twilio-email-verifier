@@ -13,12 +13,12 @@ const limiter = new Bottleneck({
 const inputFile = path.resolve(
   __dirname,
   "assets",
-  "DAO_central_emails_missed.csv"
+  "DAO_central_emails_latest.csv"
 );
 const outputFile = path.resolve(
   __dirname,
   "assets",
-  "DAO_central_emails_missed_validated.csv"
+  "DAO_central_emails_latest_validated.csv"
 );
 
 (async function () {
