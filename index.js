@@ -1,9 +1,13 @@
 const path = require("path");
-const sleep = require("util").promisify(setTimeout);
 const csv = require("fast-csv");
+const Bottleneck = require("bottleneck");
 require("dotenv").config();
 const client = require("@sendgrid/client");
 client.setApiKey(process.env.SENDGRID_API_KEY);
+
+const limiter = new Bottleneck({
+  minTime: 150, // sendgrid rate limited to 7 requests per second
+});
 
 const inputFile = path.resolve(
   __dirname,
@@ -52,13 +56,14 @@ function readCsv(path, options, rowProcessor) {
         "source": "signup",
       };
       try {
-        const [response] = await client.request({
-          url: `/v3/validations/email`,
-          method: "POST",
-          body,
-        });
+        const [response] = await limiter.schedule(() =>
+          client.request({
+            url: `/v3/validations/email`,
+            method: "POST",
+            body,
+          })
+        );
         const { result } = response.body;
-        await sleep(150); // sendgrid rate limited to 7 requests per second
         results.push({
           ...item,
           verdict: result.verdict,
