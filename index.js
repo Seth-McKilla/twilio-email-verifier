@@ -50,19 +50,20 @@ function readCsv(path, options, rowProcessor) {
   }));
 
   return await Promise.all(
-    data.map(async (item) => {
+    data.map(async (item, idx) => {
       const body = {
         email: item.email,
         "source": "signup",
       };
       try {
-        const [response] = await limiter.schedule(() =>
-          client.request({
+        const [response] = await limiter.schedule(() => {
+          console.log(idx);
+          return client.request({
             url: `/v3/validations/email`,
             method: "POST",
             body,
-          })
-        );
+          });
+        });
         const { result } = response.body;
         results.push({
           ...item,
